@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+
+* {
+    margin: 0px;
+    padding: 0px;
+    background-color: black;
+    font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
+    font-size: 1.4em;
+}
+
+#container {
+    padding: 20px;
+    color: #fff;
+    width: 945px;
+    margin: 0 auto;
+    background-color: #333;
+    border: 5px gold solid;
+}
+
+h1 {
+    font-size: 1em;
+    display: inline-block;
+    background-color: #333;
+}
+
+h2 {
+    font-size: 0.3em;
+    color: #fff;
+    padding: 20px 10px;
+    text-align: center;
+}
+
+h3 {
+    font-size: 0.18em;
+    color: #fff;
+    
+    text-align: center;
+}
+
+input[type=submit] {
+    width: 120px;
+    font-size: 0.2em;
+    margin-left: 40px;
+    background-color: orange;
+    color: blue;
+    padding: 5px 20px;
+}
+
+input {
+    font-size: 0.8em;
+    width: 715px;
+    margin-bottom: 20px;
+    color: #aaa;
+    padding: 5px;
+    text-align:center;
+}
+
+.location {
+    width: 202px;
+    height: 200px;
+    border: 2px solid gold;
+    display: inline-block;
+    margin: 10px;
+}
+
+#console_log {
+    width: 920px;
+    height: 200px;
+    border: 2px solid gold;
+    margin: 10px;
+    overflow: scroll;
+    font-size: 0.5em
+}
+
+form {
+    background-color: #333;
+
+}
+
+.loss {
+    color: red
+}
+.win {
+    color: green;
+}
+
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <h1>Your Gold</h1>
+            <input type="text" value="{{request.session.total}}">
+            <form action="/get_gold" method="POST">
+                {% csrf_token %}
+                <div class="location">
+                    <h2>Farm</h2><h3>(earns 10-20 gold)</h3><input type="submit" value="Find Gold!" name="farm">
+                </div>
+
+                <div class="location">
+                    <h2>Cave</h2><h3>(earns 5-10 gold)</h3><input type="submit" value="Find Gold!" name="cave">
+                </div>
+
+                <div class="location">
+                    <h2>House</h2><h3>(earns 2-5 gold)</h3><input type="submit" value="Find Gold!" name="house">
+                </div>
+
+                <div class="location">
+                    <h2>Casino</h2><h3>(earns/takes 0-50 gold)</h3><input type="submit" value="Find Gold!" name="casino">
+                </div>
+            </form>
+            
+            <div id="console_log">
+                {% for gold in request.session.history reversed %}
+                    {% if gold < 0 %}
+                        <div class="loss">YOU LOST
+                    {% else %}
+                        <div class="win">YOU WON 
+                    {% endif %}
+                        &nbsp;GOLD &nbsp;{{ gold }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>
